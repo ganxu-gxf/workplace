@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
+    <title>编辑管理员</title>
+</head>
+<body class="loginBody">
+<div class="loginMainInner">
+    <a style="position: absolute;top: 20px;left: 30px;color: #337ab7;text-decoration: none"
+       href="javascript:history.go(-1)">返回上一页</a>
+    <h3 class="loginTitle">编辑用户</h3>
+    <input class="pageData" type="hidden" id="oldname" th:value="${admin.username}">
+    <div class="loginMain">
+        <form myattr="" action="/admin/adminController/adminUpdate" method="post">
+            <div class="form-group">
+                <p>
+                    <input class="pageData" type="hidden" id="adminId" name="adminId" th:value="${admin.id}">
+                    <label for="adminname">账号：</label>
+                    <input th:value="${admin.username}" autocomplete="off" type="text" class="form-control col-md-6"
+                           id="adminname" name="adminname" placeholder="账号" required>
+                    <span class="admin_attention"></span>
+                </p>
+            </div>
+            <div class="form-group mt50">
+                <label for="password">密码：</label>
+                <input autocomplete="off" id="password" type="password" class="form-control col-md-6" name="password"
+                       placeholder="如果密码为空，默认为原密码">
+            </div>
+            <div class="form-group admin_isShow">
+                <label>启用：</label>
+                <input style="width: 16px;height: 16px;" type="checkbox" id="isEnabled" name="isEnabled" value="true"
+                       th:checked="${admin.isEnabled eq true }"/>
+            </div>
+            <button id="loginbtn" type="submit" class="btn btn-primary loginbtn">修改</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#adminname").blur(function () {
+            var adminId = $('#adminId').val();
+            var adminname = $('#adminname').val();
+            $.ajax({
+                url: "/admin/adminController/existAdmin",
+                type: "post",
+                dataType: "json",
+                data: {
+                    adminId: adminId,
+                    username: adminname
+                },
+                success: function (data) {
+                    $(".loginMain form").attr("myattr",data.error.code)
+                    $('.admin_attention').html(data.error.msg);
+                },
+                error: function (err) {
+                    alert("系统繁忙，请后再试！");
+                }
+            });
+        })
+
+        $("#loginbtn").click(function () {
+            var s = $(".loginMain form").attr("myattr");
+            if(s != 0){
+                return false;
+            }else {
+                $(".loginMain form").submit();
+            }
+        })
+    });
+</script>

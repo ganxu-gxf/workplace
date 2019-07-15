@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/pagination.css">
+    <script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.pagination.js"></script>
+    <script type="text/javascript" src="/js/laydate.js"></script>
+    <title>渠道列表页面</title>
+</head>
+<body class="loginBody">
+<div class="centerMax">
+    <div class="rtbHeader clearfix">
+        <img class="h_left logo" src="/images/logo.png" alt="">
+    </div>
+    <div class="rtbMain clearfix">
+        <div class="m_left verticle-mode">
+            渠道列表页面
+        </div>
+        <div class="operation">
+            <button class="btn btn-primary admin_home"><a href="/admin/channelRegisteredController/list">返回主页</a></button>
+            <button class="btn btn-primary admin_add"><a href="/admin/adminController/source">添加渠道</a></button>
+        </div>
+        <input id="allNumber" type="hidden" th:value="${pages?.TotalPages}">
+        <form id="formData" accept-charset="utf-8" action="/admin/sourceController/list" method="post">
+            <div class="m_right">
+                <input class="pageData" type="hidden" name="page" th:value="${currpage}">
+                <table class="table table-bordered" id="listTable">
+                    <thead>
+                    <tr class="search">
+                        <th colspan="5">
+                            <label style="margin-left: 20px">渠道名称:</label>
+                            <input autocomplete="off" class="form-control p_input" name="name" placeholder="请选择渠道名称"
+                                   type="text"
+                                   id="pickTime3" th:value="${name}">
+                            <label style="margin-left: 20px">是否显示:</label>
+                            <select class="form-control p_input" id="isShow" name="isShow">
+                                <option value="" th:selected="${isShow == ''}">全部</option>
+                                <option value="true" th:selected="${isShow == true}">显示</option>
+                                <option value="false" th:selected="${isShow == false}">隐藏</option>
+                            </select>
+                            <label style="margin-left: 20px">渠道管理员:</label>
+                            <select class="form-control p_input" id="adminId" name="adminId">
+                                <option value="">请选择渠道管理员</option>
+                                <option th:selected="${adminId == admin?.id}"
+                                        th:each="admin,adminStat : ${admins}" th:value="${admin.id}"
+                                        th:text="${admin.username}">
+                                </option>
+                            </select>
+                            <button type="button" id="sou" class="btn btn-primary btnsearch">搜索</button>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>渠道名称</th>
+                        <th>渠道管理员</th>
+                        <th>是否展示</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="source,sourceStat:${pages?.content}">
+                        <td th:text="${source.name}"></td>
+                        <td th:text="${source.admin.username}"></td>
+                        <td th:text="${source.isShow}? 显示 : 隐藏"></td>
+                        <td th:text="${#dates.format(source.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td>
+                            <a th:href="@{'/admin/sourceController/edit?sourceId='+${source.id}}">编辑</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+
+                <div class="m-style">
+                    <div class="M-box3"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var pageTatal = Number($("#allNumber").val());
+        $('.M-box3').pagination({
+            pageCount: pageTatal,
+            current: $(".pageData").val(),
+            jump: true,
+            coping: true,
+            prevContent: '上页',
+            nextContent: '下页',
+            callback: function (api) {
+                console.log(api.getCurrent())
+                $(".pageData").val(api.getCurrent());
+                $("#formData").submit();
+            }
+        });
+
+        $(".btnsearch").click(function () {
+            $("#formData").attr("action", "/admin/sourceController/list")
+            $("#formData").submit();
+        })
+
+    })
+</script>

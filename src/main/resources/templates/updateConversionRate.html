@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/js/laydate.js"></script>
+    <title>实时后台</title>
+</head>
+<body class="loginBody">
+<div class="loginMainInner">
+    <h3 class="loginTitle">修改转化率</h3>
+    <a style="position: absolute;top: 20px;left: 30px;color: #337ab7;text-decoration: none" href="/admin/channelRegisteredController/list">返回主页</a>
+    <div class="loginMain">
+        <div class="form-group">
+            <label>转化率：</label>
+            <input autocomplete="off" type="text" class="form-control col-md-6" id="conversionRate" name="conversionRate" th:value="${conversionRate?.conversionRate}">
+        </div>
+        <button id="addbtn" type="button" class="btn btn-primary loginbtn">修改</button>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#addbtn").click(function(){
+            var conversionRate = $("#conversionRate").val();
+
+            if(conversionRate == null || conversionRate  == ""){
+                alert("转化率不能为空！");
+                return false;
+            }
+
+            $.ajax({
+                url:"/admin/globalVariableController/add",
+                type:"post",
+                dataType:"json",
+                data:{
+                    conversionRate: conversionRate
+                },
+                success:function(data){
+
+                    if(data.error.code == -1){
+                        window.location.href = "login";
+                        return false;
+                    }else if(data.error.code == -2){
+                        window.location.href = "/admin/channelRegisteredController/list";
+                        return false;
+                    }else{
+                        alert(data.error.msg);
+                    }
+                },
+                error:function(err){
+                    alert("系统繁忙，请后再试！");
+                }
+            });
+        });
+    })
+
+</script>

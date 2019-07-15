@@ -1,0 +1,2 @@
+#添加超级管理员,账号:superadmin  密码:superadmin2018
+INSERT INTO t_admin (create_date,modify_date,is_enabled,password,username) VALUES (NOW(), NOW(), TRUE, 'c7edca921fa9df0f2187244362a6285b','superadmin')

@@ -1,0 +1,249 @@
+
+
+*{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+body,html{
+    height: 100%;
+    min-height: 600px;
+}
+
+
+.clearfix:after{content:""; display:block; visibility:hidden; height:0; clear:both;}
+.clearfix{zoom:1;}
+
+.centerMax{
+    width: 1200px;
+    margin: 0 auto;
+    min-height: 100%;
+    background-color:rgba(169, 184, 211, 0.6);
+    box-shadow: 0 0 10px #fff;
+}
+.loginBody{
+    background: url("../images/background.jpg") no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+    position: relative;
+}
+
+
+.loginMainInner{
+    width: 500px;
+    height: 350px;
+    background-color:rgba(169, 184, 211, 0.6);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -250px;
+    margin-top: -250px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #fff;
+}
+.loginTitle{
+    font-size: 20px;
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    letter-spacing:8px;
+}
+.pt30{
+    padding-top: 30px;
+}
+.loginMain .form-group{
+    text-align: center;
+}
+.loginMain .form-control{
+    width: 50%;
+    float: none;
+    display: inline-block;
+}
+.loginMain .form-group label{
+    color: #fff;
+    font-weight: normal;
+    font-size: 16px;
+    letter-spacing: 4px;
+}
+.loginMain .loginbtn{
+    padding: 5px 130px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 40px;
+    letter-spacing: 10px;
+}
+.loginMain {
+    position: relative;
+}
+.loginMain .attention{
+    position: absolute;
+    left: 36%;
+    top: 35px;
+    color: #df5c5c;
+}
+
+
+.rtbHeader{
+    padding: 20px 30px;
+    /*border-bottom: 1px solid #666;*/
+}
+.rtbHeader .logo{
+    width: 40px;
+    height: 40px;
+    float: left;
+}
+.rtbHeader .h_rigth{
+    float: right;
+    margin-top: 15px;
+}
+.h_rigth span{
+    font-size: 16px;
+    color: #000;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+
+.rtbMain{
+    font-size: 16px;
+    color: #000;
+}
+.rtbMain .m_left{
+    font-size: 26px;
+    padding: 30px 0;
+    text-align: center;
+}
+.rtbMain .m_right{
+    padding: 20px;
+}
+.rtbMain .table{
+    margin-bottom: 0;
+}
+.rtbMain .table th,.rtbMain .table td{
+    font-weight: normal;
+}
+.m_right .search th{
+    padding: 20px;
+}
+.m_right .p_input{
+    width: 16% !important;
+    display: inline-block;
+    float: none;
+}
+.m_right .btnsearch{
+    padding: 5px 20px;
+    margin-top: -4px;
+    margin-left: 30px;
+}
+
+
+#sourceName{
+    width: 16% !important;
+    display: inline-block!important;
+}
+
+.m-style .active{
+    background: #337ab7!important;
+    border-color: #337ab7!important;
+}
+
+.M-box3{
+    float: right;
+    margin-top: 20px;
+}
+
+.h_rigth a {
+    font-size: 16px;
+    margin: 0 10px;
+    color: #000;
+}
+
+.M-box3 a {
+    font-size: 16px;
+    margin: 0 10px;
+    color: #333!important;
+}
+
+.M-box3 a:hover {
+    background: #337ab7!important;
+    border-color: #337ab7!important;
+    color: #fff;
+}
+
+.jump-ipt{
+    color: #333!important;
+}
+
+
+.isShow{
+    padding-left: 112px;
+    text-align: left!important;
+}
+
+
+
+.content-left{
+    margin-top: 20px;
+    margin-left: 25px;
+    width: 160px;
+    float: left;
+    border: 1px solid #ddd;
+    border-bottom: none 0;
+}
+.ct1000{
+    width: 1000px;
+    float: right;
+}
+.content-left ul{
+    margin-bottom: 0;
+}
+.content-left li{
+    text-align: center;
+}
+.content-left li a{
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    padding: 10px 0;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+}
+
+.operation{
+    text-align: right;
+    padding: 20px 20px 0 20px;
+}
+.operation .btn{
+    padding: 0;
+}
+.operation .btn-primary a{
+    padding: 6px 12px;
+    display: inline-block;
+    color: #fff;
+    text-decoration: none;
+}
+
+.mt50{
+    margin-top: 26px;
+}
+
+.admin_attention{
+    position: absolute;
+    left: 31%;
+    top: 35px;
+    color: #df5c5c;
+}
+.admin_isShow{
+    padding-left: 92px;
+    text-align: left!important;
+}
+
+
+#consumesOutExcel{
+    padding: 5px 20px;
+    vertical-align: 2px;
+}
+
+

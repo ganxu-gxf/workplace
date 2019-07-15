@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/pagination.css">
+    <script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.pagination.js"></script>
+    <script type="text/javascript" src="/js/laydate.js"></script>
+    <title>实时后台</title>
+</head>
+<body class="loginBody">
+<div class="centerMax">
+    <div class="rtbHeader clearfix">
+        <img class="h_left logo" src="/images/logo.png" alt="">
+        <div class="h_rigth">
+            <span style="margin: 0 10px;" th:text="${username}"></span>
+            <a href="/admin/adminController/logout" id="out">退出</a>
+            <a th:if = "${username == 'superadmin'}" href="/admin/globalVariableController/query">修改转化率</a>
+            <a th:if = "${username == 'superadmin'}" href="/admin/globalVariableController/queryDatumNumber">修改基准数</a>
+        </div>
+    </div>
+    <div class="rtbMain clearfix">
+        <div class="m_left verticle-mode">
+            流量统计
+        </div>
+
+        <div class="mainContent clearfix">
+            <div th:if = "${username == 'superadmin'}" class="content-left">
+                <ul>
+                    <li>
+                        <a href="/admin/adminController/list">管理员模块</a>
+                        <a href="/admin/sourceController/list">渠道模块</a>
+                    </li>
+                </ul>
+            </div>
+            <div th:class="${username == 'superadmin'} ? 'ct1000'">
+                <input type="hidden" class="Oradmin" th:value="${username}">
+                <input id="allNumber" type="hidden" th:value="${pages?.TotalPages}">
+                <form id="formData" accept-charset="utf-8" action="/admin/channelRegisteredController/list" method="post">
+                    <div class="m_right">
+                        <input class="pageData" type="hidden" name="page" th:value="${currpage}">
+                        <table class="table table-bordered" id="listTable">
+                            <thead>
+                            <tr class="search">
+                                <th th:colspan="${username == 'superadmin' ? 4 : 3}">
+                                    <label>时间选择：</label>
+                                    <input autocomplete="off" class="form-control p_input" name="startTime" placeholder="请选择开始日期" type="text"
+                                           id="pickTime1" th:value="${startTime}">
+                                    -
+                                    <input autocomplete="off" class="form-control p_input" name="endTime" placeholder="请选择结束日期" type="text"
+                                           id="pickTime2" th:value="${endTime}">
+                                    <label style="margin-left: 20px">渠道:</label>
+                                    <select class="form-control" id="sourceName" name="name">
+                                        <option value="">请选择渠道</option>
+                                        <option th:selected="${name == source?.name}" th:each="source,sourceStat : ${sourceList}" th:value="${source.name}"
+                                                th:text="${source.name}">
+                                        </option>
+                                    </select>
+                                    <button type="button" id="sou" class="btn btn-primary btnsearch">搜索</button>
+                                    <button type="button" id="consumesOutExcel" class="btn btn-primary">导出</button>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>渠道名称</th>
+                                <th>时间</th>
+                                <th>注册数</th>
+                                <th th:if = "${username == 'superadmin'}">申请数</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="channelRegistered,channelRegisteredStat:${pages?.content}">
+                                <td th:text="${channelRegistered.channelRegisteredName}"></td>
+                                <td th:text="${#dates.format(channelRegistered.channelDate, 'yyyy-MM-dd')}"></td>
+                                <td class="register" th:text="${channelRegistered.channelRegisteredNumber}"></td>
+                                <td th:if = "${username == 'superadmin'}" class="apply" th:text="${channelRegistered.channelApplyNumber}"></td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="2">合计</td>
+                                <td class="allsum"></td>
+                                <td  th:if = "${username == 'superadmin'}" class="applysum"></td>
+                            </tr>
+                            </tfoot>
+                        </table>
+
+                        <div class="m-style">
+                            <div class="M-box3"></div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    $(document).ready(function () {
+        laydate.render({
+            elem: '#pickTime1'
+        });
+        laydate.render({
+            elem: '#pickTime2'
+        });
+
+
+        var pageTatal = Number($("#allNumber").val());
+        $('.M-box3').pagination({
+            pageCount: pageTatal,
+            current: $(".pageData").val(),
+            jump: true,
+            coping: true,
+            prevContent: '上页',
+            nextContent: '下页',
+            callback: function (api) {
+                console.log(api.getCurrent())
+                $(".pageData").val(api.getCurrent());
+                $("#formData").submit();
+            }
+        });
+
+
+        var stuats = $('.Oradmin').val() == "superadmin" ? true : false;
+        var sumNumber = 0;
+        var Applysum = 0;
+
+        console.log("1:"+stuats)
+
+
+        $("#listTable tbody tr").each(function (index,val) {
+            sumNumber += Number($(this).children(".register").text());
+
+            console.log("2:"+stuats)
+            if(stuats){
+                Applysum += Number($(this).children(".apply").text());
+            }
+        })
+
+        $("#listTable .allsum").html(sumNumber);
+
+        console.log("3:"+stuats)
+        if(stuats){
+
+            $("#listTable .applysum").html(Applysum);
+        }
+
+
+        $(".btnsearch").click(function () {
+            $("#formData").attr("action", "/admin/channelRegisteredController/list")
+            $("#formData").submit();
+        })
+
+        //导出excel表
+        $('#consumesOutExcel').on('click',function(){
+                question = confirm("确认把该搜索结果导出Excel表格?")
+                if (question !="0") {
+                    var startTime = $('#pickTime1').val();
+                    var endTime = $('#pickTime2').val();
+                    var name = $('#sourceName').val();
+                    location.href="/admin/channelRegisteredController/exportExcel?startTime="+startTime+"&endTime="+endTime+"&name="+name;
+                }
+        });
+
+
+    })
+</script>
